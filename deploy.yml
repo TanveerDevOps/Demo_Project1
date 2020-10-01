@@ -3,7 +3,7 @@
   become: True
   tasks:
     - name: Install docker
-      yum:
+      apt:
         name: docker
         state: present
     - name: start docker
