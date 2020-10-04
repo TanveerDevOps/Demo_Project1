@@ -16,4 +16,4 @@ spec:
       - name: my-app
         image: tanveerdevops/my-app:09a61b8
         ports:
-        - containerPort: 80
+        - containerPort: 8080
