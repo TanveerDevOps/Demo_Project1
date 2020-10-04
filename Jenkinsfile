@@ -50,6 +50,7 @@ pipeline{
                   }
                   catch(error){
                       sh "ssh ubuntu@ip-172-31-13-254 kubectl create -f ."
+                  }
                       
               }
           
