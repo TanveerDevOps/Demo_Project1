@@ -38,7 +38,24 @@ pipeline{
              ansiblePlaybook credentialsId: 'dev-server', disableHostKeyChecking: true, extras: "-e DOCKER_TAG=${DOCKER_TAG}", installation: 'ansible', inventory: 'dev.inv', playbook: 'deploy.yml'
             }
         }    
-        
+     stage('deploy to k8s'){
+         steps{
+          sh "chmod +x tag.sh"
+          sh "./tag.sh ${DOCKER_TAG}"
+          sshagent(['kops']) {
+             sh "scp -o StrictHostKeyChecking=no service.yml my-app-pod.yml ubuntu@ip-172-31-13-254:/home/ubuntu/"
+              script{
+                  try{
+                      sh "ssh ubuntu@ip-172-31-13-254 kubectl apply -f ."
+                  }
+                  catch(error){
+                      sh "ssh ubuntu@ip-172-31-13-254 kubectl create -f ."
+                      
+              }
+          
+           }
+        }
+            
     }
 }
 
